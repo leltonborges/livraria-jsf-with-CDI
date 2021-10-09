@@ -1,6 +1,6 @@
 package br.com.caelum.livraria.bean;
 
-import br.com.caelum.livraria.dao.UsuarioDao;
+import br.com.caelum.livraria.dao.UsuarioDAO;
 import br.com.caelum.livraria.modelo.Usuario;
 
 import javax.faces.application.FacesMessage;
@@ -29,7 +29,7 @@ public class LoginBean implements Serializable {
 		System.out.println("fazendo login do usuario " + this.usuario.getEmail());
 		
 		FacesContext context = FacesContext.getCurrentInstance();
-		boolean existe = new UsuarioDao().existe(this.usuario);
+		boolean existe = new UsuarioDAO().existe(this.usuario);
 		if(existe ) {
 			context.getExternalContext().getSessionMap().put("usuarioLogado", this.usuario);
 			return "livro?faces-redirect=true";

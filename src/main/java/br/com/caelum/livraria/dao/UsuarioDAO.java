@@ -6,7 +6,10 @@ import javax.persistence.TypedQuery;
 
 import br.com.caelum.livraria.modelo.Usuario;
 
-public class UsuarioDao {
+import java.io.Serializable;
+
+public class UsuarioDAO implements Serializable {
+	private static final long serialVersionUID = 1l;
 
 	public boolean existe(Usuario usuario) {
 		
