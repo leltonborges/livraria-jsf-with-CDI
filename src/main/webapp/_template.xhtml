@@ -20,7 +20,9 @@
 				</h:form>
 			</h:panelGrid>
 			    
-			    <p:growl id="messages" showDetail="true" autoUpdate="true"/>
+			    <p:growl id="messages" showDetail="true">
+					<p:autoUpdate/>
+				</p:growl>
 			
 				<h:form  rendered="#{usuarioLogado != null}">
 				    <p:menuButton value="Menu">

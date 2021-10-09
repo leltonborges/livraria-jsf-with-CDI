@@ -7,73 +7,58 @@ import javax.persistence.criteria.CriteriaQuery;
 
 public class DAO<T> {
 
-	private final Class<T> classe;
-	private EntityManager em;
+    private final Class<T> classe;
+    private EntityManager em;
 
-	public DAO(EntityManager manager, Class<T> classe) {
-		this.em = manager;
-		this.classe = classe;
-	}
+    public DAO(EntityManager manager, Class<T> classe) {
+        this.em = manager;
+        this.classe = classe;
+    }
 
-	public void adiciona(T t) {
-		// abre transacao
-		em.getTransaction().begin();
+    public void adiciona(T t) {
+        em.persist(t);
+    }
 
-		// persiste o objeto
-		em.persist(t);
+    public void remove(T t) {
+        em.remove(em.merge(t));
+    }
 
-		// commita a transacao
-		em.getTransaction().commit();
+    public void atualiza(T t) {
+        em.merge(t);
+    }
 
-	}
+    public List<T> listaTodos() {
+        CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
+        query.select(query.from(classe));
 
-	public void remove(T t) {
-		em.getTransaction().begin();
+        List<T> lista = em.createQuery(query).getResultList();
 
-		em.remove(em.merge(t));
+        return lista;
+    }
 
-		em.getTransaction().commit();
-	}
+    public T buscaPorId(Integer id) {
+        T instancia = em.find(classe, id);
 
-	public void atualiza(T t) {
-		em.getTransaction().begin();
+        return instancia;
+    }
 
-		em.merge(t);
-		em.getTransaction().commit();
-	}
+    public int contaTodos() {
+        CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
+        query.select(query.from(classe));
+        long result = (Long) em.createQuery(query)
+                .getSingleResult();
 
-	public List<T> listaTodos() {
-		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
-		query.select(query.from(classe));
+        return (int) result;
+    }
 
-		List<T> lista = em.createQuery(query).getResultList();
+    public List<T> listaTodosPaginada(int firstResult, int maxResults) {
+        CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
+        query.select(query.from(classe));
 
-		return lista;
-	}
+        List<T> lista = em.createQuery(query).setFirstResult(firstResult)
+                .setMaxResults(maxResults).getResultList();
 
-	public T buscaPorId(Integer id) {
-		T instancia = em.find(classe, id);
-
-		return instancia;
-	}
-
-	public int contaTodos() {
-		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
-		query.select(query.from(classe));
-		long result = (Long) em.createQuery(query)
-				.getSingleResult();
-
-		return (int) result;
-	}
-
-	public List<T> listaTodosPaginada(int firstResult, int maxResults) {
-		CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
-		query.select(query.from(classe));
-
-		List<T> lista = em.createQuery(query).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
-
-		return lista;
-	}
+        return lista;
+    }
 
 }

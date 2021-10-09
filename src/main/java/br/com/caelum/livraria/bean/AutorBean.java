@@ -3,6 +3,8 @@ package br.com.caelum.livraria.bean;
 import br.com.caelum.livraria.dao.AutorDAO;
 import br.com.caelum.livraria.dao.DAO;
 import br.com.caelum.livraria.modelo.Autor;
+import br.com.caelum.livraria.transaction.Logs;
+import br.com.caelum.livraria.transaction.Transacional;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -17,6 +19,7 @@ import java.util.List;
 @ViewScoped // Request do CDI, package javax.faces.view.ViewScoped
 
 // CDI necessita do Serializable
+@Logs
 public class AutorBean implements Serializable {
 	private final static long serialVersionUID = 1l;
 
@@ -35,10 +38,13 @@ public class AutorBean implements Serializable {
 		this.autorId = autorId;
 	}
 
+	@Logs
 	public void carregarAutorPelaId() {
 		this.autor = this.dao.buscaPorId(autorId);
 	}
 
+	@Transacional
+	@Logs
 	public String gravar() {
 		System.out.println("Gravando autor " + this.autor.getNome());
 
@@ -53,6 +59,8 @@ public class AutorBean implements Serializable {
 		return "livro?faces-redirect=true";
 	}
 
+	@Transacional
+	@Logs
 	public void remover(Autor autor) {
 		System.out.println("Removendo autor " + autor.getNome());
 		this.dao.remove(autor);

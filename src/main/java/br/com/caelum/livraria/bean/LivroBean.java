@@ -5,6 +5,8 @@ import br.com.caelum.livraria.dao.DAO;
 import br.com.caelum.livraria.dao.LivroDAO;
 import br.com.caelum.livraria.modelo.Autor;
 import br.com.caelum.livraria.modelo.Livro;
+import br.com.caelum.livraria.transaction.Logs;
+import br.com.caelum.livraria.transaction.Transacional;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -21,7 +23,7 @@ import java.util.List;
 
 @Named // Gerenciando beans com CDI
 @ViewScoped // Request do CDI, package javax.faces.view.ViewScoped
-
+@Logs // Anotação personalizada calcularar o tempo em ms
 // CDI necessita do Serializable
 public class LivroBean implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -50,6 +52,7 @@ public class LivroBean implements Serializable {
 		return livro;
 	}
 
+	@Logs
 	public List<Livro> getLivros() {
 		if(this.livros == null) {
 			this.livros = livroDAO.listaTodos();
@@ -61,6 +64,7 @@ public class LivroBean implements Serializable {
 		return this.autorDAO.listaTodos();
 	}
 
+	@Logs
 	public List<Autor> getAutoresDoLivro() {
 		return this.livro.getAutores();
 	}
@@ -68,13 +72,15 @@ public class LivroBean implements Serializable {
 	public void carregarLivroPelaId() {
 		this.livro = this.livroDAO.buscaPorId(this.livro.getId());
 	}
-	
+
 	public void gravarAutor() {
 		Autor autor = this.autorDAO.buscaPorId(this.autorId);
 		this.livro.adicionaAutor(autor);
 		System.out.println("Escrito por: " + autor.getNome());
 	}
 
+	@Transacional
+	@Logs
 	public void gravar() {
 		System.out.println("Gravando livro " + this.livro.getTitulo());
 
@@ -94,16 +100,20 @@ public class LivroBean implements Serializable {
 		this.livro = new Livro();
 	}
 
+	@Transacional
+	@Logs
 	public void remover(Livro livro) {
 		System.out.println("Removendo livro");
 		this.livroDAO.remove(livro);
 		this.livros = this.livroDAO.listaTodos();
 	}
-	
+
+	@Logs
 	public void removerAutorDoLivro(Autor autor) {
 		this.livro.removeAutor(autor);
 	}
-	
+
+	@Logs
 	public void carregar(Livro livro) {
 		System.out.println("Carregando livro");
 		this.livro = livro;
