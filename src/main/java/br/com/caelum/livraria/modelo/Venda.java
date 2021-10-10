@@ -1,9 +1,21 @@
 package br.com.caelum.livraria.modelo;
 
+import javax.persistence.*;
+
+@Entity
 public class Venda {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@ManyToOne
 	private Livro livro;
 	private Integer quantidade;
+
+	public Venda() {
+
+	}
 
 	public Venda(Livro livro, Integer quantidade) {
 		this.livro = livro;

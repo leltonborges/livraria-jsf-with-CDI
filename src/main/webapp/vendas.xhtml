@@ -7,15 +7,16 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 	<ui:composition template="_template.xhtml">
-	
-	
-
 		<ui:define name="titulo">
 			<p:outputPanel>Vendas</p:outputPanel>
 		</ui:define>
 
 		<ui:define name="conteudo">
-			<p:chart type="bar" model="#{vendasBean.vendasModel}" style="height:300px"/>
+			<div class="card">
+				<h5>Grafico de Vendas</h5>
+				<p:barChart model="#{vendasBean.barModel}" style="width: 100%; height: 500px;"/>
+			</div>
+<!--			<p:chart type="bar" model="#{vendasBean.barModel}" style="height:300px"/>-->
 		</ui:define>
 
 	</ui:composition>

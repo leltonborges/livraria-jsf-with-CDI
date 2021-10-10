@@ -30,9 +30,10 @@ public class LivroBean implements Serializable {
 
 	@Inject
 	private LivroDAO livroDAO;
-
 	@Inject
 	private AutorDAO autorDAO;
+	@Inject
+	private FacesContext context;
 
 	private Livro livro = new Livro();
 
@@ -85,7 +86,7 @@ public class LivroBean implements Serializable {
 		System.out.println("Gravando livro " + this.livro.getTitulo());
 
 		if (livro.getAutores().isEmpty()) {
-			FacesContext.getCurrentInstance().addMessage("autor",
+			context.addMessage("autor",
 					new FacesMessage("Livro deve ter pelo menos um Autor."));
 			return;
 		}
