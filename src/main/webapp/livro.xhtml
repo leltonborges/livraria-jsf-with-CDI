@@ -108,13 +108,13 @@
 					<p:commandButton update=":formLivro"
 									 process="@this" value="alterar"
 									 actionListener="#{livroBean.carregar(livro)}"
-									 icon="fa fa-fw fa-edit" style="display: flex;justify-content: center"/>
+									 icon="fa fa-fw fa-edit"/>
 				</p:column>					
 				
 				<p:column headerText="Remover">
 					<p:commandButton update="@form" process="@this"
 									 value="remover" actionListener="#{livroBean.remover(livro)}"
-									 icon="fa fa-fw fa-remove" style="display: flex; justify-content: center" />
+									 icon="fa fa-fw fa-remove" />
 				</p:column>	
 			</p:dataTable>
 			</h:form>			

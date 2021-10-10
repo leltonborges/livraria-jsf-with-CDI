@@ -116,12 +116,10 @@ public class LivroBean implements Serializable {
 
 	@Logs
 	public void carregar(Livro livro) {
-		System.out.println("Carregando livro");
-		this.livro = livro;
+		this.livro = this.livroDAO.buscaPorId(livro.getId());
 	}
 	
 	public String formAutor() {
-		System.out.println("Chamanda do formulário do Autor.");
 		return "autor?faces-redirect=true";
 	}
 
